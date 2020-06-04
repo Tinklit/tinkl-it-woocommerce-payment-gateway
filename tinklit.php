@@ -1,16 +1,18 @@
 <?php
 
 /*
-Plugin Name: Tinkl.it WooCommerce Payment Gateway
+Plugin Name: tinkl.it WooCommerce Payment Gateway
 Plugin URI: https://tinkl.it
-Description: Accept Bitcoin Instantly via Tinkl.it
-Version: 1.2.2
-Author: Tinkl.it
+Description: Accept Bitcoin Instantly via tinkl.it
+Version: 1.2.3
+Author: tinkl.it
 Author URI: https://tinkl.it/it/chi-siamo
 */
 
 add_action('plugins_loaded', 'tinklit_init');
-
+define('TINKLIT_WOOCOMMERCE_VERSION', '1.2.3');
+define('TINKLIT_INVOICE_PATH', 'https://api.tinkl.it/invoices/' );
+define('TINKLIT_STAGING_INVOICE_PATH', 'https://api-staging.tinkl.it/invoices/' );
 add_action('wp_loaded', 'tinklit_custom_payment_response');
 
 
@@ -25,16 +27,14 @@ function tinklit_custom_payment_response() {
 
             $order_id = wc_get_order_id_by_order_key( $order_key );
 
-            $guid = get_post_meta( $order_id, 'tinklit_invoice_guid' );
-
             $gateways = $woocommerce->payment_gateways->get_available_payment_gateways();
 
-            if( tinklit_check_if_already_processed( $order_id , $guid ) ) {
+            if( tinklit_check_if_already_processed( $order_id ) ) {
 
                 if( !empty( $gateways['tinklit'] ) &&
                 method_exists( $gateways['tinklit'], 'payment_callback' ) )
                 {
-                    $gateways['tinklit']->payment_callback( $order_id, $guid[0] );
+                    $gateways['tinklit']->payment_callback( $order_id );
 
                     update_post_meta( $order_id, 'tinklit_processing',  'Payment done and processed' );
 
@@ -42,24 +42,20 @@ function tinklit_custom_payment_response() {
 
             } else {
 
-                wp_die( 'This order is already processed. ');
+                wp_die( 'This order is already processed!');
             }
         }
 }
 
-function tinklit_check_if_already_processed ( $order_id , $guid ) {
+function tinklit_check_if_already_processed ( $order_id ) {
 
     $tinklit_processed_order = get_post_meta( $order_id, 'tinklit_processing' );
 
-    if( empty( $tinklit_processed_order ) && !empty( $guid ) ) {
+    if( empty( $tinklit_processed_order ) ) {
 
         return true;
     }
 }
-
-
-
-define('TINKLIT_WOOCOMMERCE_VERSION', '1.2');
 
 function tinklit_init()
 {
@@ -90,17 +86,19 @@ function tinklit_init()
             $this->client_id = (empty($this->get_option('client_id')) ? $this->get_option('client_id') : $this->get_option('client_id'));
             $this->token = (empty($this->get_option('token')) ? $this->get_option('token') : $this->get_option('token'));
 			$this->test = (empty($this->get_option('test')) ? $this->get_option('test') : $this->get_option('test'));
+            $this->order_statuses = $this->get_option('order_statuses');
 
             add_action('woocommerce_update_options_payment_gateways_' . $this->id, array($this, 'process_admin_options'));
             add_action('woocommerce_update_options_payment_gateways_' . $this->id, array($this, 'save_order_statuses'));
             add_action('woocommerce_thankyou_tinklit', array($this, 'thankyou'));
+            add_action('woocommerce_api_wc_gateway_tinklit', array($this, 'payment_callback'));
         }
 
         public function admin_options()
         {
             ?>
-            <h3><?php _e('Tinkl.it - Bitcoin POS Payments', 'woothemes'); ?></h3>
-            <p><?php _e('Accept Bitcoin instantly with Tinkl.it API', 'woothemes'); ?></p>
+            <h3><?php _e('tinkl.it - Bitcoin POS Payments', 'woothemes'); ?></h3>
+            <p><?php _e('Accept Bitcoin instantly with tinkl.it API', 'woothemes'); ?></p>
             <table class="form-table">
                 <?php $this->generate_settings_html(); ?>
             </table>
@@ -112,8 +110,8 @@ function tinklit_init()
         {
             $this->form_fields = array(
                 'enabled' => array(
-                    'title' => __('Abilita Tinkl.it', 'woocommerce'),
-                    'label' => __('Enable Bitcoin payments via Tinkl.it', 'woocommerce'),
+                    'title' => __('Abilita tinkl.it', 'woocommerce'),
+                    'label' => __('Enable Bitcoin payments via tinkl.it', 'woocommerce'),
                     'type' => 'checkbox',
                     'description' => '',
                     'default' => 'no',
@@ -128,7 +126,7 @@ function tinklit_init()
                     'title' => __('Description', 'woocommerce'),
                     'type' => 'textarea',
                     'description' => __('The payment method description which a customer sees at the checkout of your store.', 'woocommerce'),
-                    'default' => __('Powered by Tinkl.it'),
+                    'default' => __('Powered by tinkl.it'),
                 ),
                 'client_id' => array(
                     'title' => __('Client ID', 'woocommerce'),
@@ -149,10 +147,10 @@ function tinklit_init()
                     'title' => __('API Test Mode', 'woocommerce'),
                     'type' => 'checkbox',
                     'label' => __('Enable Test Mode', 'woocommerce'),
-                    'default' => 'yes',
-                    'description' => __('To test on <a href="https://staging.tinklit.it" target="_blank">Tinkl.it Staging</a>, keep inserted "staging". 
+                    'default' => 'no',
+                    'description' => __('To test on <a href="https://staging.tinklit.it" target="_blank">tinkl.it Staging</a>, keep inserted "staging". 
                     Please note, for Test Mode you must create a separate account on <a href="https://staging.tinklit.it" target="_blank">staging.tinkl.it</a> and generate API credentials there. 
-                    API credentials generated on <a href="https://tinkl.it" target="_blank">Tinkl.it</a> are "Live" credentials and will not work for "Test" mode.', 'woocommerce'),
+                    API credentials generated on <a href="https://tinkl.it" target="_blank">tinkl.it</a> are "Live" credentials and will not work for "Test" mode.', 'woocommerce'),
                 )
             );
         }
@@ -165,9 +163,10 @@ function tinklit_init()
         }
 
         public function process_payment($order_id)
-        {			
-		
-			$order = wc_get_order($order_id);
+        {	
+            // $this->debugLog('TINKLIT process_payment');
+            global $woocommerce, $page, $paged;
+			$order = new WC_Order($order_id);
 
             $this->init_tinklit();
 
@@ -175,53 +174,43 @@ function tinklit_init()
             foreach ($order->get_items('line_item') as $item) {
                 $description[] = $item['qty'] . ' × ' . $item['name'];
             }
-	
-            $tinklit_invoice_guid = get_post_meta($order->get_id(), 'tinklit_invoice_guid', true);
-			
-            if (empty($tinklit_invoice_guid)) {
-			
-				                $order = \Tinklit\Merchant\Order::create(array(
-                        'price'             => $order->get_total(),
-                        'currency'          => get_woocommerce_currency(),
-                        'deferred'          => false,
-                        'time_limit'        => 900,
-                        'order_id'          => $order->get_id(),
-                        'item_code'         => implode($description, ', ') . ' (Order #' . $order->get_id(). ') ' . $order->get_formatted_billing_full_name() . ' ('. $order->get_billing_email() .')',
-                        'notification_url'  => trailingslashit(get_bloginfo('wpurl')) . '?wc-api=wc_gateway_tinklit',
-                        'redirect_url'      => add_query_arg('order-received', $order->get_id(), add_query_arg('key', $order->get_order_key(), add_query_arg('custom_tinklit_response', "true", $this->get_return_url($order))))
-                                                
-                       
-                ));
 
-				
-				$tinklit_order_guid = $order->guid;
-				update_post_meta( $order_id, 'tinklit_invoice_guid', $tinklit_order_guid );
+            $wcOrder = wc_get_order($order_id);
+           
+            $invoice = \Tinklit\Merchant\Invoice::create(array(
+                'price'             => $order->get_total(),
+                'currency'          => get_woocommerce_currency(),
+                'deferred'          => false,
+                'time_limit'        => 900,
+                'order_id'          => $order->get_id(),
+                'item_code'         => implode($description, ', ') . ' (Order #' . $order->get_id(). ') ' . $order->get_formatted_billing_full_name() . ' ('. $order->get_billing_email() .')',
+                'cancel_url'        => html_entity_decode($order->get_cancel_order_url()),
+                'notification_url'  => trailingslashit(get_bloginfo('wpurl')) . '?wc-api=wc_gateway_tinklit',
+                'redirect_url'      => add_query_arg('order-received', $order->get_id(), add_query_arg('key', $order->get_order_key(), add_query_arg('custom_tinklit_response', "true", $this->get_return_url($wcOrder))))
+            ));
 
-                update_post_meta( $order_id, 'tinklit_processing_order_id',  $order_id );
-			
-				if ($order && $order->url) {				
-					return array(
-						'result' => 'success',
-						'redirect' => $order->url,
-					);
-				} else {
-					return array(
-						'result' => 'fail',
-					);
-				}
-			} else {
+            update_post_meta($order_id, 'tinklit_invoice_guid', $invoice->guid);
+
+            $tinklit_invoice_path = $this->test === 'yes' ? TINKLIT_STAGING_INVOICE_PATH : TINKLIT_INVOICE_PATH;
+
+            if ($invoice && $invoice->guid) {				
+                return array(
+                    'result' => 'success',
+                    'redirect' => $tinklit_invoice_path . $invoice->guid,
+                );
+            } else {
                 return array(
                     'result' => 'fail',
                 );
-            }			
+            }		
         }
 		
-        public function payment_callback( $order_id, $guid )
+        public function payment_callback($order_id)
         {
+            // $this->debugLog('TINKLIT payment_callback');
             $request = array();
 
             $request[ 'order_id' ] = $order_id;
-            $request[ 'guid' ]     = $guid;
 
             global $woocommerce;
 
@@ -229,39 +218,39 @@ function tinklit_init()
 			
             try {
                 if (!$order || !$order->get_id()) {
-                    throw new Exception('Order #' . $request['order_id'] . ' does not exists');
+                    throw new Exception('Order #' . $request[ 'order_id' ] . ' does not exists');
                 }
 
                 $guid = get_post_meta($order->get_id(), 'tinklit_invoice_guid', true);
 
                 if (empty($guid) ) {
-                    throw new Exception('Order has not a Tinkl.it Invoice GUID associated');
+                    throw new Exception('Order has not a tinkl.it Invoice GUID associated');
                 }
 
                 $this->init_tinklit();
-                $tnklOrder = \Tinklit\Merchant\Order::find( $request['guid'] );
+                $invoice = \Tinklit\Merchant\Invoice::find($guid);
 				
-                if (!$tnklOrder) {
-                    throw new Exception('Tinkl.it Order #' . $order->get_id() . ' does not exists');
+                if (!$invoice) {
+                    throw new Exception('tinkl.it Invoice GUID #' . $order->get_id() . ' does not exists');
                 }
-				 
-		$orderStatuses = $this->get_option('order_statuses');
-                $wcOrderStatus = $orderStatuses[$tnklOrder->status];
+				// $this->debugLog($invoice);
+                $orderStatuses = $this->get_option('order_statuses');
+                $wcOrderStatus = $orderStatuses[$invoice->status];
                 $wcExpiredStatus = $orderStatuses['expired'];
                 $wcErrorStatus = $orderStatuses['error'];
                 $wcPartialStatus = $orderStatuses['partial'];
                 $wcPayedStatus = $orderStatuses['payed'];
+                $wcPendingStatus = $orderStatuses['pending'];
 
-                update_post_meta( $request['order_id'], 'get_status', $tnklOrder->status  );
+                update_post_meta( $request['order_id'], 'get_status', $invoice->status  );
 
-		switch ($tnklOrder->status) {
+                switch ($invoice->status) {
                     case 'payed':
                         $statusWas = "wc-" . $order->status;
-						
-			$order->update_status($wcOrderStatus);
-                        $order->add_order_note(__('Payment is confirmed and has been credited to your Tinkl.it account. Purchased goods/services can be securely delivered to the buyer.', 'tinklit'));
+                        $order->update_status($wcOrderStatus);
+                        $order->add_order_note(__('Payment is confirmed and has been credited to your tinkl.it account. Purchased goods/services can be securely delivered to the buyer.', 'tinklit'));
                         $order->payment_complete();
-						
+                        
                         if ($order->status == 'processing' && ($statusWas == $wcExpiredStatus || $statusWas == $wcErrorStatus)) {
                             WC()->mailer()->emails['WC_Email_Customer_Processing_Order']->trigger($order->get_id());
                         }
@@ -269,25 +258,23 @@ function tinklit_init()
                             WC()->mailer()->emails['WC_Email_New_Order']->trigger($order->get_id());
                         }						
                         break;
-		/*
                     case 'pending':
                         $order->update_status($wcOrderStatus);
-                        $order->add_order_note(__('Customer has paid via Chain. Payment is awaiting the confirmations by Bitcoin network, do not send purchased goods/services yet.', 'tinklit'));
+                        $order->add_order_note(__('Payment is still pending, do not send purchased goods/services yet.', 'tinklit'));
                         break;
-		*/
-		    case 'partial':
+                    case 'partial':
                         $order->update_status($wcOrderStatus);
                         $order->add_order_note(__('Payment has arrived, but not enough to cover the entire amount requested.', 'tinklit'));
                         break;
-		    case 'expired':
+                    case 'expired':
                         $order->update_status($wcOrderStatus);
-                        $order->add_order_note(__('Something went wrong! Payment is expired.', 'tinklit'));
+                        $order->add_order_note(__('Payment is expired.', 'tinklit'));
                         break;
-		    case 'error':
+                    case 'error':
                         $order->update_status($wcOrderStatus);
                         $order->add_order_note(__('Payment rejected by the network or did not confirm.', 'tinklit'));
                         break;
-                }
+                        }
             } catch (Exception $e) {
                 die(get_class($e) . ': ' . $e->getMessage());
             }
@@ -299,11 +286,11 @@ function tinklit_init()
 
             $tnklStatuses = $this->tnklOrderStatuses();
             $wcStatuses = wc_get_order_statuses();
-            $defaultStatuses = array('payed' => 'wc-processing', 'partial' => 'wc-processing', 'expired' => 'wc-cancelled', 'error' => 'wc-canceled');
+            $defaultStatuses = array('payed' => 'wc-completed', 'pending' => 'wc-processing', 'partial' => 'wc-cancelled', 'expired' => 'wc-cancelled', 'error' => 'wc-cancelled');
 
             ?>
             <tr valign="top">
-                <th scope="row" class="titledesc">Tinkl.it Invoice / WC Order<br>Statuses:</th>
+                <th scope="row" class="titledesc">tinkl.it Invoice / WC Order<br>Statuses:</th>
                 <td class="forminp" id="tinklit_order_statuses">
                     <table cellspacing="0">
                         <?php
@@ -379,7 +366,7 @@ function tinklit_init()
 
         private function tnklOrderStatuses()
         {
-            return array('payed' => 'Payed', 'partial' => 'Partial', 'expired' => 'Expired', 'error' => 'Error');
+            return array('payed' => 'Payed', 'pending' => 'Pending', 'partial' => 'Partial', 'expired' => 'Expired', 'error' => 'Error');
         }
 
         private function init_tinklit()
@@ -389,9 +376,18 @@ function tinklit_init()
                     'client_id'    	=> (empty($this->client_id) ? $this->client_id : $this->client_id),
 					'token'    		=> (empty($this->token) ? $this->token : $this->token),
 					'environment'   => ($this->test === 'yes' ? 'staging' : 'live'),
-                    'user_agent'    => ('Tinkl.it - WooCommerce v' . WOOCOMMERCE_VERSION . ' Plugin v' . TINKLIT_WOOCOMMERCE_VERSION)
+                    'user_agent'    => ('tinkl.it - WooCommerce v' . WOOCOMMERCE_VERSION . ' Plugin v' . TINKLIT_WOOCOMMERCE_VERSION)
                 )
             );
+        }
+
+        private function debugLog($log)
+        {
+            if (is_array($log) || is_object($log)) {
+                error_log(print_r($log, true));
+            } else {
+                error_log($log);
+            }
         }
     }
 

@@ -1,29 +1,29 @@
-## Tinkl.it Woocommerce Payment Gateway
-Bitcoin gateway to accept bitcoin at Woocommerce store with Tinkl.it API.
+## *tinkl.it* Woocommerce Payment Gateway
+Bitcoin gateway to accept bitcoin at Woocommerce store with *tinkl.it* API.
 
-Read the plugin installation instructions below to get started with Tinkl.it payment gateway on your woocommerce store.
+Read the plugin installation instructions below to get started with *tinkl.it* payment gateway on your woocommerce store.
 
 ## Install
 
-Sign up for an Tinkl.it account at <https://tinkl.it>.
+Sign up for an *tinkl.it* account at <https://tinkl.it>.
 
-Create new API access.
+Create new API terminal type **APP** from your dashboard and activate it.
 
-Visit Tinkl.it API Documentation (https://api.tinkl.it/doc/).
+Visit *tinkl.it* API Documentation (https://api.tinkl.it/doc/).
 
 ### via [WordPress Plugin Manager](https://codex.wordpress.org/Plugins_Add_New_Screen)
 
 1. Go to *Admin » Plugins » Add New* in admin panel.
 
-2. Enter **tinkl.it woocommerce** in search box.
+2. Enter ***tinkl.it* woocommerce** in search box.
 
 3. Click **Install Now**.
 
 4. Activate the plugin through the **Plugins** menu in WordPress.
 
-5. Enter [API Credentials] data on Tinkl.it Woocommerce Payment Gateway Plugin Settings: *Admin » WooCommerce* click on **Checkout** tab find **Tinkl.it** in Payment Gateways table and click **Settings**.
+5. Enter [API Credentials] data on *tinkl.it* Woocommerce Payment Gateway Plugin Settings: *Admin » WooCommerce* click on **Checkout** tab find ***tinkl.it*** in Payment Gateways table and click **Settings**.
 
-6. Don't forget check **Enable Bitcoin payments via Tinkl.it** checkbox in Tinkl.it Woocommerce Payment Gateway Plugin settings.
+6. Don't forget check **Enable Bitcoin payments via *tinkl.it*** checkbox in *tinkl.it* Woocommerce Payment Gateway Plugin settings.
 
 ### via WooCommerce FTP Uploader
 
@@ -35,9 +35,9 @@ Visit Tinkl.it API Documentation (https://api.tinkl.it/doc/).
 
 4. Activate the plugin through the **Plugins** menu in WordPress.
 
-5. Enter [API Credentials] (https://api.tinkl.it/doc/) data on Tinkl.it Woocommerce Payment Gateway Plugin Settings: *Admin » WooCommerce* click on **Checkout** tab find **Tinklit** in Payment Gateways table and click **Settings**.
+5. Enter [API Credentials] (https://api.tinkl.it/doc/) data on *tinkl.it* Woocommerce Payment Gateway Plugin Settings: *Admin » WooCommerce* click on **Checkout** tab find ***tinkl.it*** in Payment Gateways table and click **Settings**.
 
-6. Don't forget check **Enable Bitcoin payments via Tinklit** checkbox in Tinkl.it Woocommerce Payment Gateway Pluginsettings.
+6. Don't forget check **Enable Bitcoin payments via *tinkl.it*** checkbox in *tinkl.it* Woocommerce Payment Gateway Pluginsettings.
 
 ### via FTP
 
@@ -47,7 +47,7 @@ Visit Tinkl.it API Documentation (https://api.tinkl.it/doc/).
 
 3. Activate the plugin through the **Plugins** menu in WordPress.
 
-4. Enter [API Credentials] (https://api.tinkl.it/doc/) data on Tinkl.it Woocommerce Payment Gateway Plugin Settings: *Admin » WooCommerce* click on **Checkout** tab find **Tinkl.it** in Payment Gateways table and click **Settings**.
+4. Enter [API Credentials] (https://api.tinkl.it/doc/) data on *tinkl.it* Woocommerce Payment Gateway Plugin Settings: *Admin » WooCommerce* click on **Checkout** tab find ***tinkl.it*** in Payment Gateways table and click **Settings**.
 
-5. Don't forget check **Enable Bitcoin payments via Tinkl.it** checkbox in Tinkl.it Woocommerce Payment Gateway Plugin settings.
+5. Don't forget check **Enable Bitcoin payments via *tinkl.it*** checkbox in *tinkl.it* Woocommerce Payment Gateway Plugin settings.
 

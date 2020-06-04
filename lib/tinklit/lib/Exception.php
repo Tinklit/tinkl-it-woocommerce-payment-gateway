@@ -17,8 +17,7 @@ class Exception
         if (isset($error['message']))
             $message = $error['message'];
         
-        /*return $reason . ' - ' . $message;*/
-		return $message;
+        return $reason . ' - ' . $message;
     }
 
     public static function throwException($http_status, $error)
@@ -41,19 +40,19 @@ class Exception
                 switch ($reason) {
                     case 'PageNotFound': throw new PageNotFound(self::formatError($error));
                     case 'RecordNotFound': throw new RecordNotFound(self::formatError($error));
-                    case 'OrderNotFound': throw new OrderNotFound(self::formatError($error));
+                    case 'InvoiceNotFound': throw new InvoiceNotFound(self::formatError($error));
                     default: throw new NotFound(self::formatError($error));
                 }
 	   case 406:
                 switch ($reason) {
                     case 'PageNotAcceptable': throw new PageNotAcceptable(self::formatError($error));
                     case 'RecordNotAcceptable': throw new RecordNotAcceptable(self::formatError($error));
-                    case 'OrderNotAcceptable': throw new OrderNotAcceptable(self::formatError($error));
+                    case 'InvoiceNotAcceptable': throw new InvoiceNotAcceptable(self::formatError($error));
                     default: throw new NotAcceptable(self::formatError($error));
                 }	
             case 422:
                 switch ($reason) {
-                    case 'OrderIsNotValid': throw new OrderIsNotValid(self::formatError($error));
+                    case 'InvoiceIsNotValid': throw new InvoiceIsNotValid(self::formatError($error));
                     default: throw new UnprocessableEntity(self::formatError($error));
                 }
             case 429:

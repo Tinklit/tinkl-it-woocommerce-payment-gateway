@@ -3,57 +3,57 @@ namespace Tinklit\Merchant;
 
 use Tinklit\Tinklit;
 use Tinklit\Merchant;
-use Tinklit\OrderIsNotValid;
-use Tinklit\OrderNotFound;
+use Tinklit\InvoiceIsNotValid;
+use Tinklit\InvoiceNotFound;
 
-class Order extends Merchant
+class Invoice extends Merchant
 {
-    private $order;
+    private $invoice;
 
-    public function __construct($order)
+    public function __construct($invoice)
     {
-        $this->order = $order;
+        $this->invoice = $invoice;
     }
 
     public function toHash()
     {
-        return $this->order;
+        return $this->invoice;
     }
 
     public function __get($name)
     {
-        return $this->order[$name];
+        return $this->invoice[$name];
     }
 
     public static function find($guid, $options = array(), $authentication = array())
     {
         try {
             return self::findOrFail($guid, $options, $authentication);
-        } catch (OrderNotFound $e) {
+        } catch (InvoiceNotFound $e) {
             return false;
         }
     }
 
     public static function findOrFail($guid, $options = array(), $authentication = array())
     {
-        $order = Tinklit::request('/invoices/' . $guid, 'GET', array(), $authentication);
+        $invoice = Tinklit::request('/invoices/' . $guid, 'GET', array(), $authentication);
 
-        return new self($order);
+        return new self($invoice);
     }
 
     public static function create($params, $options = array(), $authentication = array())
     {
         try {
             return self::createOrFail($params, $options, $authentication);
-        } catch (OrderIsNotValid $e) {
+        } catch (InvoiceIsNotValid $e) {
             return false;
         }
     }
 
     public static function createOrFail($params, $options = array(), $authentication = array())
     {
-        $order = Tinklit::request('/invoices', 'POST', $params, $authentication);
+        $invoice = Tinklit::request('/invoices', 'POST', $params, $authentication);
 
-        return new self($order);
+        return new self($invoice);
     }
 }

@@ -16,17 +16,17 @@ class BadCredentials extends Unauthorized {}
 class NotFound extends APIError {}
 class PageNotFound extends NotFound{}
 class RecordNotFound extends NotFound {}
-class OrderNotFound extends NotFound {}
+class InvoiceNotFound extends NotFound {}
 
 # HTTP Status 406
 class NotAcceptable extends APIError {}
 class PageNotAcceptable extends NotAcceptable{}
 class RecordNotAcceptable extends NotAcceptable {}
-class OrderNotAcceptable extends NotAcceptable {}
+class InvoiceNotAcceptable extends NotAcceptable {}
 
 # HTTP Status 422
 class UnprocessableEntity extends APIError {}
-class OrderIsNotValid extends UnprocessableEntity {}
+class InvoiceIsNotValid extends UnprocessableEntity {}
 
 # HTTP Status 429
 class RateLimitException extends APIError {}

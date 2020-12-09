@@ -54,7 +54,7 @@ class Tinklit
         $headers   = array();
 		$headers[] = 'X-CLIENT-ID:' . $client_id;
 		$headers[] = 'X-AUTH-TOKEN: ' . $token;
-		
+
         $curl      = curl_init();
 
         $curl_options = array(
@@ -72,10 +72,10 @@ class Tinklit
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($curl, CURLOPT_USERAGENT, $user_agent);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, $curlopt_ssl_verifypeer);
-		
+
         $response    = json_decode(curl_exec($curl), TRUE);
         $http_status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-		
+
         /*
         if ($http_status === 200)
                 return $response;

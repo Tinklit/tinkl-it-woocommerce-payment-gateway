@@ -6,9 +6,7 @@ Tags: tinkl.it, tinklit, tinklit woocommerce, bitcoin, accept bitcoin, bitcoin p
 
 Requires at least: 4.0
 
-Tested up to: 5.4.1
-
-Stable tag: trunk
+Tested up to: 5.6
 
 License: MIT
 

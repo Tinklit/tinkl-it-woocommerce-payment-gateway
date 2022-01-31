@@ -2,7 +2,7 @@
 Contributors: tinkl.it
 Tags: tinkl.it, tinklit, tinklit woocommerce, bitcoin, accept bitcoin, bitcoin processor, bitcoin gateway, bitcoin pos, payment gateway, payment module, bitcoin module, bitcoin woocommerce, btc
 Requires at least: 4.0
-Tested up to: 5.6.2
+Tested up to: 5.9
 Stable tag: trunk
 License: MIT
 License URI: https://github.com/Tinklit/tinkl-it-woocommerce-payment-gateway/blob/master/LICENSE
@@ -21,7 +21,6 @@ Our official WooCommerce module connects your store to tinkl.it **platform and i
 The extension allows stores that use Wordpress WooCommerce shopping cart system to accept Bitcoin payments via the Tinkl.it API. Integration and configuration of our WooCommerce module is simple, while the solution you get is fully automated - you will receive automatic payment confirmations and order status updates.
 
 To find out more about our services [*check our website*](https://tinkl.it).
-
 
 = Features =
 
@@ -55,9 +54,9 @@ To find out more about our services [*check our website*](https://tinkl.it).
 
 1. Install the tinkl.it Woocommerce Payment Gateway. It can be done in three ways:
  
-* Install through [Wordpress Plugin Manager](https://codex.wordpress.org/Plugins_Add_New_Screen): Admin Â» Plugins Â» Add New Â» Enter "tinklit woocommerce" in search Â» Click "Install Now"
+* Install through [Wordpress Plugin Manager](https://codex.wordpress.org/Plugins_Add_New_Screen): Admin » Plugins » Add New » Enter "tinklit woocommerce" in search » Click "Install Now"
  
-* [Upload ZIP](https://codex.wordpress.org/Plugins_Add_New_Screen#Upload_Tab): Admin Â» Plugins Â» Add New Â» Upload Plugin
+* [Upload ZIP](https://codex.wordpress.org/Plugins_Add_New_Screen#Upload_Tab): Admin » Plugins » Add New » Upload Plugin
 
 * Extract ZIP and upload extracted directory to the `/wp-content/plugins/` through FTP
 
@@ -66,3 +65,11 @@ To find out more about our services [*check our website*](https://tinkl.it).
 4. Create API Credentials in [tinkl.it](https://tinkl.it/) (or [staging.tinkl.it](https://staging.tinkl.it/) for testing)
 
 5. Check "Enable Cryptocurrency payments via tinkl.it" checkbox in tinkl.it WooCommerce Plugin settings
+
+== Frequently Asked Questions ==
+
+== Screenshots ==
+
+== Changelog ==
+
+== Upgrade Notice ==

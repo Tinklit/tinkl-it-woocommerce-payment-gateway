@@ -1,20 +1,20 @@
-=== Accept Bitcoin with tinkl.it ===
+=== Accept Bitcoin & Lightning Network with tinkl.it ===
 Contributors: tinkl.it
-Tags: tinkl.it, tinklit, tinklit woocommerce, bitcoin, accept bitcoin, bitcoin processor, bitcoin gateway, bitcoin pos, payment gateway, payment module, bitcoin module, bitcoin woocommerce, btc
+Tags: tinkl.it, tinklit, tinklit woocommerce, bitcoin, lightning, lightning network, accept bitcoin, bitcoin processor, bitcoin gateway, bitcoin pos, payment gateway, payment module, bitcoin module, bitcoin woocommerce, btc
 Requires at least: 4.0
-Tested up to: 5.9
+Tested up to: 6.0
 Stable tag: trunk
 License: MIT
 License URI: https://github.com/Tinklit/tinkl-it-woocommerce-payment-gateway/blob/master/LICENSE
 
 
-Accept Bitcoin payments and receive payouts in Euro without exchange rate volatility risk! Made with love by Tinkl.it
+Accept Bitcoin & Lightning Network and receive payouts in Euro without exchange rate volatility risk! Made with love by Tinkl.it
 
 == Description ==
 
-== tinkl.it Bitcoin Payment Gateway for WooCommerce ==
+== tinkl.it Bitcoin & Lightning Network Payment Gateway for WooCommerce ==
 
-Start accepting Bitcoin in a few minutes!
+Start accepting Bitcoin & Lightning Network in a few minutes!
 
 Our official WooCommerce module connects your store to tinkl.it **platform and invoice system**.
 
@@ -30,6 +30,8 @@ To find out more about our services [*check our website*](https://tinkl.it).
 
 * Supports traditional on-chain transactions using the new native SegWit addresses (bech32)
 * [Staging environment](https://staging.tinkl.it) for testing with Tesnet Bitcoin.
+
+* Supports Lightning Network payments
 
 * No setup or recurring fees.
 

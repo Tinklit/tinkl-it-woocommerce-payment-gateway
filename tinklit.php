@@ -3,14 +3,14 @@
 /*
 Plugin Name: tinkl.it WooCommerce Payment Gateway
 Plugin URI: https://tinkl.it
-Description: Accept Bitcoin Instantly via tinkl.it
-Version: 1.3.0
+Description: Accept Bitcoin & Lightning Network instantly via tinkl.it
+Version: 1.3.1
 Author: tinkl.it
-Author URI: https://tinkl.it/it/chi-siamo
+Author URI: https://tinkl.it/about
 */
 
 add_action('plugins_loaded', 'tinklit_init');
-define('TINKLIT_WOOCOMMERCE_VERSION', '1.3.0');
+define('TINKLIT_WOOCOMMERCE_VERSION', '1.3.1');
 define('TINKLIT_INVOICE_PATH', 'https://api.tinkl.it/invoices/' );
 define('TINKLIT_STAGING_INVOICE_PATH', 'https://api-staging.tinkl.it/invoices/' );
 
@@ -55,7 +55,7 @@ function tinklit_init()
         {
             ?>
             <h3><?php _e('tinkl.it - Bitcoin POS Payments', 'woothemes'); ?></h3>
-            <p><?php _e('Accept Bitcoin instantly with tinkl.it API', 'woothemes'); ?></p>
+            <p><?php _e('Accept Bitcoin & Lightning Network instantly with tinkl.it API', 'woothemes'); ?></p>
             <table class="form-table">
                 <?php $this->generate_settings_html(); ?>
             </table>
@@ -77,7 +77,7 @@ function tinklit_init()
                     'title' => __('Title', 'woocommerce'),
                     'type' => 'text',
                     'description' => __('The payment method title which a customer sees at the checkout of your store.', 'woocommerce'),
-                    'default' => __('Pay with Bitcoin', 'woocommerce'),
+                    'default' => __('Pay with Bitcoin  & Lightning Network', 'woocommerce'),
                 ),
                 'description' => array(
                     'title' => __('Description', 'woocommerce'),
@@ -105,9 +105,9 @@ function tinklit_init()
                     'type' => 'checkbox',
                     'label' => __('Enable Test Mode', 'woocommerce'),
                     'default' => 'no',
-                    'description' => __('To test on <a href="https://staging.tinklit.it" target="_blank">tinkl.it Staging</a>, keep inserted "staging". 
-                    Please note, for Test Mode you must create a separate account on <a href="https://staging.tinklit.it" target="_blank">staging.tinkl.it</a> and generate API credentials there. 
-                    API credentials generated on <a href="https://tinkl.it" target="_blank">tinkl.it</a> are "Live" credentials and will not work for "Test" mode.', 'woocommerce'),
+                    'description' => __('To test on <a href="https://staging.tinklit.it" target="_blank">staging.tinkl.it</a>, check "Enable Test Mode". 
+                    Please note, for Test Mode you must create a separate account on <a href="https://staging.tinklit.it" target="_blank">staging.tinkl.it</a> and generate new pos for ecommerce.
+                    CLIENT ID and TOKEN generated on <a href="https://tinkl.it" target="_blank">tinkl.it</a> are "Live" credentials and will not work for "Test" mode.', 'woocommerce'),
                 )
             );
         }
